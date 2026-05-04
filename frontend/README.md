@@ -1,59 +1,29 @@
-# Frontend
+# 💻 Frontend : Interface de Tchat (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.8.
+Ce dossier contient l'interface utilisateur de la messagerie, développée avec Angular 21. Elle communique avec le backend via le protocole WebSocket/STOMP en utilisant la librairie `@stomp/stompjs` et les `Signals` d'Angular pour des performances optimales.
 
-## Development server
+## 🚀 Installation et Lancement
 
-To start a local development server, run:
+Assurez-vous d'être dans le dossier `/frontend` et que le backend Spring Boot est déjà en cours d'exécution.
 
-```bash
-ng serve
-```
+1. Installez les dépendances du projet :
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+   ```bash
+   npm install
+   ```
 
-## Code scaffolding
+2. Lancez le serveur de développement :
+   ```bash
+   ng serve
+   ```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+L'application sera accessible sur **`http://localhost:4200`**.
 
-```bash
-ng generate component component-name
-```
+## 🧪 Comment tester le flux temps réel ?
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Pour valider le fonctionnement de la Preuve de Concept :
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Ouvrez **deux fenêtres de votre navigateur** côte à côte sur `http://localhost:4200` (ou utilisez un onglet normal et un onglet de navigation privée).
+2. Dans la barre d'outils en bas de l'écran, modifiez le nom de l'expéditeur pour simuler deux utilisateurs différents (ex: `Agent_Sarah` à gauche, `Client_Jean` à droite).
+3. Envoyez un message depuis l'une des fenêtres.
+4. Vous le verrez apparaître instantanément sur les deux écrans grâce au système de souscription STOMP !
