@@ -1,0 +1,40 @@
+<div class="chat-container">
+  <h2>Service Client - Messagerie instantanée</h2>
+
+  <div class="chat-box">
+    @for (msg of messages(); track $index) {
+      <div class="message-row">
+        <strong>{{ msg.sender }}</strong>
+
+        @if (msg.timestamp) {
+          <span class="timestamp">({{ msg.timestamp | date: 'HH:mm:ss' }})</span>
+        }
+        : <span>{{ msg.content }}</span>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>Canal de tchat ouvert.</p>
+      </div>
+    }
+  </div>
+
+  <div class="chat-controls">
+    <input
+      type="text"
+      class="input-sender"
+      [ngModel]="currentUser()"
+      (ngModelChange)="currentUser.set($event)"
+    />
+
+    <input
+      type="text"
+      class="input-message"
+      placeholder="Tapez votre message ici..."
+      [ngModel]="newMessageContent()"
+      (ngModelChange)="newMessageContent.set($event)"
+      (keyup.enter)="sendMessage()"
+    />
+
+    <button (click)="sendMessage()">Envoyer</button>
+  </div>
+</div>
