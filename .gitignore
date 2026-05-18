@@ -1,0 +1,35 @@
+# Sécurité : Variables d'environnement locales
+.env
+.env.local
+
+# Configuration des IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Fichiers systèmes
+.DS_Store
+Thumbs.db
+
+# Éléments spécifiques au Backend (Java)
+HELP.md
+backend/target/
+backend/.mvn/
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/pom.xml.next
+backend/release.properties
+
+# Éléments spécifiques au Frontend (Angular/Node)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.tmp/
+frontend/.sass-cache/
+frontend/connect.lock
+frontend/coverage/

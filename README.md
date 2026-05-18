@@ -1,32 +1,64 @@
 # 🚗 Your Car Your Way - PoC Tchat Temps Réel
 
-Bienvenue sur le dépôt de la preuve de concept (PoC) de la messagerie instantanée de "Your Car Your Way".
+Bienvenue sur le dépôt de la preuve de concept (PoC) de la messagerie 
+instantanée de "Your Car Your Way".
 
-Ce document est conçu pour vous accompagner dans la prise en main du projet. Son objectif est de valider la faisabilité technique d'une communication en temps réel entre nos clients et nos agents.
+Ce document centralise la configuration globale du projet et permet à n'importe 
+quel développeur de l'équipe de déployer l'intégralité de l'environnement de 
+manière conteneurisée, homogène et sécurisée.
 
 ## 🏗️ L'Architecture du Projet (Monorepo)
 
-Ce dépôt est divisé en deux écosystèmes distincts :
+Ce dépôt est orchestré sous forme de monorepo divisé en deux briques distinctes :
+- [**`/backend`**](./backend/README.md) : L'API Java 25 / Spring Boot (Broker de messages).
+- [**`/frontend`**](./frontend/README.md) : L'application cliente Angular 21.
 
-- [**`/backend`**](./backend/README.md) : L'API Java/Spring Boot agissant comme serveur et broker de messages.
-- [**`/frontend`**](./frontend/README.md) : L'application cliente en Angular 21.
+### Le concept architectural : "Save-then-Broadcast"
+Pour garantir qu'aucun message ne soit perdu en cas de micro-coupure réseau :
+1. **Envoi** : Le client Angular pousse le message via un tunnel WebSocket (STOMP).
+2. **Persistance** : Le serveur Spring Boot l'enregistre immédiatement en BDD.
+3. **Diffusion** : Après succès de l'écriture, le message est diffusé sur le topic.
 
-### Le concept : "Save-then-Broadcast"
-
-Pour garantir qu'aucun message ne soit perdu en cas de coupure réseau, nous utilisons une architecture hybride :
-
-1. **Envoi :** Le client Angular envoie son message au serveur via un tunnel WebSocket (STOMP).
-2. **Sauvegarde :** Le serveur Spring Boot sauvegarde immédiatement le message dans PostgreSQL (Single Source of Truth).
-3. **Diffusion :** Si la sauvegarde réussit, le serveur diffuse le message à tous les utilisateurs connectés.
+---
 
 ## 🛠️ Prérequis Globaux
 
-Avant de commencer, assurez-vous d'avoir installé :
+Pour lancer l'écosystème complet sans installer de runtimes locaux :
+- **Docker Desktop** (v25+)
+- **Docker Compose**
 
-- **Java 25** (Distribution Temurin recommandée)
-- **Node.js** (v20 ou supérieur) & **npm**
-- **Angular CLI** (v21)
-- **PostgreSQL 17**
+---
 
-👉 **[Consulter les instructions de lancement du Backend](./backend/README.md)**  
-👉 **[Consulter les instructions de lancement du Frontend](./frontend/README.md)**
+## 🚀 Lancement Rapide (Mode Industrialisé)
+
+### 1. Configuration de l'environnement local
+À la racine du projet, créez un fichier `.env` (ignoré par Git) :
+
+```text
+DB_NAME=ycyw_db
+DB_USER=ycyw_admin
+DB_PASSWORD=votre_mot_de_passe_securise_2026
+```
+
+### 2. Démarrage des conteneurs
+Lancez l'ensemble des services en arrière-plan avec une seule commande :
+
+```bash
+docker compose up -d
+```
+
+### 3. Cartographie des Accès Locaux
+
+| Service | Technologie | URL / Port Externe | Port Interne Docker |
+| :--- | :--- | :--- | :--- |
+| **Frontend** | Angular 21 / Nginx | [http://localhost:4200](http://localhost:4200) | `80` |
+| **Backend** | Java 25 / Spring Boot | [http://localhost:8080](http://localhost:8080) | `8080` |
+| **Base de Données** | PostgreSQL 18 | `localhost:5433` | `5432` |
+
+---
+
+## ⚙️ Intégration Continue (CI)
+
+Ce dépôt intègre un pipeline de validation automatisé via **GitHub Actions** (`.github/workflows/ci.yml`). À chaque `push`, il s'assure de :
+- Compiler et exécuter les tests unitaires du Backend (Maven / JDK 25).
+- Installer les dépendances et valider le build du Frontend (Node 22 / Angular).
