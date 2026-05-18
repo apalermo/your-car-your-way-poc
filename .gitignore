@@ -16,6 +16,7 @@
 Thumbs.db
 
 # Éléments spécifiques au Backend (Java)
+HELP.md
 backend/target/
 backend/.mvn/
 backend/pom.xml.tag
